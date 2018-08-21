@@ -1,0 +1,60 @@
+syntax = "proto3";
+
+import "scalapb/scalapb.proto";
+
+package ranked.GameProtocol;
+
+option (scalapb.options) = {
+    single_file: true
+    flat_package: true
+    preamble: "sealed trait DomainEvent"
+    preamble: "sealed trait Event"
+};
+
+// StateData
+
+message Score {
+    int32 teamA = 1;
+    int32 teamB = 2;
+}
+
+// DomainEvents
+
+message Goal {
+    option (scalapb.message).extends = "DomainEvent";
+    Team team = 1;
+}
+
+message Correction {
+    option (scalapb.message).extends = "DomainEvent";
+    Team team = 1;
+}
+
+enum Team {
+    TEAM_A = 0;
+    TEAM_B = 1;
+}
+
+// Events
+
+message StartGame {
+    option (scalapb.message).extends = "Event";
+}
+
+message AbortGame {
+    option (scalapb.message).extends = "Event";
+}
+
+message GetScore {
+    option (scalapb.message).extends = "Event";
+}
+
+message NewGoal {
+    option (scalapb.message).extends = "Event";
+    Team team = 1;
+}
+
+message RequestCorrection {
+    option (scalapb.message).extends = "Event";
+    Team team = 1;
+}
